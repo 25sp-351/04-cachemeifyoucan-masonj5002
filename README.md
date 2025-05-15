@@ -3,7 +3,7 @@
 **Due Mar 3 by 6am**  
 **Points: 50**
 
-[Assignment Link](https://classroom.github.com/a/QuTr2v-9) (Links to an external site)
+[Assignment Link](https://classroom.github.com/a/QuTr2v-9)
 
 ## Task Overview
 
