@@ -1,5 +1,10 @@
 {
     "cSpell.words": [
         "rodcut"
-    ]
+    ],
+    "files.associations": {
+        "piece_values.h": "c",
+        "cut_list.h": "c",
+        "vec.h": "c"
+    }
 }
