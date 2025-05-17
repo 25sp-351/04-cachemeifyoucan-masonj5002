@@ -9,8 +9,6 @@
 
 void usage(char *program_name);
 
-Vec read_piece_values_from_file(const char *filename);
-
 int main(int argc, char *argv[]) {
     if (argc != 2 || !strcmp(argv[1], "-h"))
         usage(argv[0]);
