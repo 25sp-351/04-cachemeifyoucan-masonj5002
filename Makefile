@@ -1,5 +1,5 @@
 OBJS = rodcut.o piece_values.o vec.o cut_list.o cache.o
-LIBS = random_replacement.so least_recently_used.so
+LIBS = random_replacement.so least_recently_used.so least_frequently_used.so
 
 CC = gcc
 CFLAGS = -Wall -fPIC
@@ -7,12 +7,15 @@ DLFLAGS = -ldl
 
 .PHONY: all clean
 
-all: rodcut_rr rodcut_lru $(LIBS)
+all: rodcut_rr rodcut_lru rodcut_lfu $(LIBS)
 
 rodcut_rr: $(OBJS)
 	$(CC) -o $@ $(CFLAGS) $(OBJS) $(DLFLAGS)
 
 rodcut_lru: $(OBJS)
+	$(CC) -o $@ $(CFLAGS) $(OBJS) $(DLFLAGS)
+
+rodcut_lfu: $(OBJS)
 	$(CC) -o $@ $(CFLAGS) $(OBJS) $(DLFLAGS)
 
 rodcut.o: rodcut.c piece_values.h cut_list.h vec.h cache.h
@@ -34,6 +37,9 @@ random_replacement.so: random_replacement.c cache.h
 	$(CC) -shared $(CFLAGS) -o $@ $<
 
 least_recently_used.so: least_recently_used.c cache.h
+	$(CC) -shared $(CFLAGS) -o $@ $<
+
+least_frequently_used.so: least_frequently_used.c cache.h
 	$(CC) -shared $(CFLAGS) -o $@ $<
 
 clean:

@@ -32,9 +32,11 @@ int main(int argc, char *argv[]) {
         libname = "./random_replacement.so";
     } else if (strstr(argv[0], "lru")) {
         libname = "./least_recently_used.so";
+    } else if (strstr(argv[0], "lfu")) {
+        libname = "./least_frequently_used.so";
     } else {
         fprintf(stderr,
-                "Unknown caching policy. Use rodcut_rr or rodcut_lru.\n");
+                "Unknown caching policy. Use rodcut_rr, rodcut_lru, or rodcut_lfu.\n");
         return 1;
     }
 
