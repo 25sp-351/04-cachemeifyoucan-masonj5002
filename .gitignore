@@ -1,5 +1,6 @@
 rodcut
 rodcut_lru
+rodcut_lfu
 rodcut_rr
 *.o
 *.so
