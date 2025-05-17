@@ -1,4 +1,6 @@
 rodcut
+rodcut_lru
+rodcut_rr
 *.o
 *.so
 .history

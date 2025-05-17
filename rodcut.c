@@ -24,9 +24,22 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    global_pv    = value_list;
+    global_pv = value_list;
 
-    Cache *cache = load_cache_module("./random_replacement.so");
+    // Loading dynamic cache module
+    const char *libname = NULL;
+    if (strstr(argv[0], "rr")) {
+        libname = "./random_replacement.so";
+    } else if (strstr(argv[0], "lru")) {
+        libname = "./least_recently_used.so";
+    } else {
+        fprintf(stderr,
+                "Unknown caching policy. Use rodcut_rr or rodcut_lru.\n");
+        return 1;
+    }
+
+    Cache *cache = load_cache_module(libname);
+
     if (!cache) {
         fprintf(stderr, "Failed to load cache module\n");
         return 1;
@@ -63,8 +76,8 @@ int main(int argc, char *argv[]) {
 
 ValueType cutlist_value_provider(KeyType key) {
     CutList *result = optimal_cutlist_for(global_pv, key);
-    cutlist_print(result); // prints for uncached values
-    int value       = result->total_value;
+    cutlist_print(result);  // prints for uncached values
+    int value = result->total_value;
     cutlist_free(result);
     return value;
 }
