@@ -45,53 +45,6 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-Vec read_piece_values_from_file(const char *filename) {
-    FILE *fp = fopen(filename, "r");
-    if (!fp) {
-        perror("fopen");
-        return NULL;
-    }
-
-    Vec val_list = new_vec(sizeof(PieceLengthValue));
-    PieceLengthValue item;
-
-    while (fscanf(fp, "%d, %d\n", &item.length, &item.value) == 2) {
-        if (item.length < 1 || item.value < 1) {
-            vec_free(val_list);
-            fclose(fp);
-            return NULL;
-        }
-
-        PieceLengthValue *items = vec_items(val_list);
-        bool duplicate          = false;
-        for (size_t i = 0; i < vec_length(val_list); i++) {
-            if (items[i].length == item.length) {
-                duplicate = true;
-                break;
-            }
-        }
-        if (duplicate) {
-            vec_free(val_list);
-            fclose(fp);
-            return NULL;
-        }
-
-        vec_add(val_list, &item);
-    }
-
-    fclose(fp);
-
-    if (vec_length(val_list) == 0) {
-        vec_free(val_list);
-        return NULL;
-    }
-
-    qsort(vec_items(val_list), vec_length(val_list), sizeof(PieceLengthValue),
-          (int (*)(const void *, const void *))compare_piece_values);
-
-    return val_list;
-}
-
 noreturn void usage(char *program_name) {
     fprintf(stderr,
             "Usage:\n"
