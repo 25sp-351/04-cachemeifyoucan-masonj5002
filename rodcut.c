@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     int *lengths = vec_items(rod_lengths);
     for (size_t i = 0; i < vec_length(rod_lengths); i++) {
         int value = cached_func(lengths[i]);
-        printf("Rod length: %d\n", lengths[i]);
+        printf("Rod length:   %d\n", lengths[i]);
         printf("Value:     %5d\n\n", value);
     }
 
@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
 
 ValueType cutlist_value_provider(KeyType key) {
     CutList *result = optimal_cutlist_for(global_pv, key);
+    cutlist_print(result); // prints for uncached values
     int value       = result->total_value;
     cutlist_free(result);
     return value;
