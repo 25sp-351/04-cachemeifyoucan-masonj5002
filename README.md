@@ -2,19 +2,19 @@
 
 ## Instructions
 
-Build:
+### Build:
 
 `make`
 
-Policy A (Least Recently Used):
+### Policy A (Least Recently Used):
 
 `./rodcut_lru length_value_pairs.txt`
 
-Policy B (Least Frequently Used):
+### Policy B (Least Frequently Used):
 
 `./rodcut_lfu length_value_pairs.txt` 
 
-Policy C (Random Replacement):
+### Policy C (Random Replacement):
 
 `./rodcut_rr length_value_pairs.txt` 
 
