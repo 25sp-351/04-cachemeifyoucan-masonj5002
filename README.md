@@ -1,9 +1,12 @@
 # 04-CacheMeIfYouCan
 
-**Due Mar 3 by 6am**  
-**Points: 50**
+## Instructions
 
-[Assignment Link](https://classroom.github.com/a/QuTr2v-9)
+Policy A (Least Recently Used):
+./rodcut_lru length_value_pairs.txt
+
+Policy B (Random Replacement):
+./rodcut_rr length_value_pairs.txt 
 
 ## Task Overview
 
