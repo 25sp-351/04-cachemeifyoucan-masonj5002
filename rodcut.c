@@ -3,11 +3,16 @@
 #include <stdnoreturn.h>
 #include <string.h>
 
+#include "cache.h"
 #include "cut_list.h"
 #include "piece_values.h"
 #include "vec.h"
 
+static Vec global_pv;
+ValueType cutlist_value_provider(KeyType key);
 void usage(char *program_name);
+
+#include "cache.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 2 || !strcmp(argv[1], "-h"))
@@ -18,6 +23,18 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Error reading value list from file: %s\n", argv[1]);
         return 1;
     }
+
+    global_pv    = value_list;
+
+    Cache *cache = load_cache_module("./random_replacement.so");
+    if (!cache) {
+        fprintf(stderr, "Failed to load cache module\n");
+        return 1;
+    }
+
+    // register caching provider
+    ProviderFunction cached_func =
+        cache->set_provider_func(cutlist_value_provider);
 
     Vec rod_lengths = new_vec(sizeof(int));
     int rod_length;
@@ -31,16 +48,24 @@ int main(int argc, char *argv[]) {
 
     int *lengths = vec_items(rod_lengths);
     for (size_t i = 0; i < vec_length(rod_lengths); i++) {
-        CutList *cl = optimal_cutlist_for(value_list, lengths[i]);
+        int value = cached_func(lengths[i]);
         printf("Rod length: %d\n", lengths[i]);
-        cutlist_print(cl);
-        printf("\n");
-        cutlist_free(cl);
+        printf("Value:     %5d\n\n", value);
     }
+
+    cache->cache_cleanup();
+    free(cache);
 
     vec_free(rod_lengths);
     vec_free(value_list);
     return 0;
+}
+
+ValueType cutlist_value_provider(KeyType key) {
+    CutList *result = optimal_cutlist_for(global_pv, key);
+    int value       = result->total_value;
+    cutlist_free(result);
+    return value;
 }
 
 noreturn void usage(char *program_name) {
