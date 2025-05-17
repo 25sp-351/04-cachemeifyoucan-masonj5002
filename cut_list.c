@@ -58,10 +58,13 @@ CutList *cutlist_add_piece(CutList *cl, PieceLengthValue pv) {
 
 void cutlist_print(CutList *cl) {
     PieceGroup *groups = vec_items(cl->groups);
-    for (int ix = 0; ix < cl->groups->length; ix++)
-        if (groups[ix].count)
+    for (int ix = 0; ix < cl->groups->length; ix++) {
+        if (groups[ix].count) {
+            int cut_total_value = groups[ix].pv.value * groups[ix].count;
             printf("%2d @ %4d = %4d \n", groups[ix].count, groups[ix].pv.length,
-                   groups[ix].pv.value);
+                   cut_total_value);
+            }
+        }
     printf("Remainder: %5d\n", cl->remainder);
     printf("Value:     %5d\n", cl->total_value);
 }
